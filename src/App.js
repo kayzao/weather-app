@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Weather from './components/weather';
 
 function App() {
-  const [lat, setLat] = useState(null); //initialized as null
-  const [long, setLong] = useState(null);
-  const [data, setData] = useState(null);
+  const [lat, setLat] = useState([]); //initialized as null
+  const [long, setLong] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,21 +14,24 @@ function App() {
         setLong(position.coords.longitude);
       });
 
-      console.log("Latitude is:", lat);
-      console.log("Longitude is:", long);
+      // console.log("Latitude is:", lat);
+      // console.log("Longitude is:", long);
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures this runs only once
+  }, [lat, long]); // Empty dependency array ensures this runs only once
 
   useEffect(() => {
     const fetchWeatherData = async () => {
       if (lat && long) {
-        await fetch(`${process.env.REACT_APP_API_URL}/weather?lat=${lat}&lon=${long}&appid=${process.env.REACT_APP_API_KEY}`)
+        await fetch(`${process.env.REACT_APP_API_URL}/weather?lat=${lat}&lon=${long}&units=imperial&appid=${process.env.REACT_APP_API_KEY}`)
           .then(res => res.json())
           .then(result => {
-            setData(result);
-            console.log(result);
+            if (result.cod === "400") console.log("grabbing API data...");
+            else {
+              setData(result);
+              console.log(result);
+            }
           })
           .catch(error => {
             console.error('Error fetching the weather data:', error);
@@ -43,8 +46,9 @@ function App() {
 
   return (
     <div className="App">
-      {data ? (
-        <Weather weatherData={data}/> //adds data as a prop to weather
+      <h1>Weather Station report:</h1>
+      {data.length !== 0 ? (
+        <Weather weatherData={data}/> //adds data as a prop to weather, and renders the weather component
       ) : (
         <div>
           <p>Loading...</p>

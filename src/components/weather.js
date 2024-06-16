@@ -6,7 +6,7 @@ const CardExampleCard = ({weatherData}) => (
 
   <Card>
     <Card.Content>
-        <Card.Header className="header">{weatherData.name}</Card.Header>
+        <Card.Header className="header">Approximate Location:  {weatherData.name}</Card.Header>
         <p>Temperature: {weatherData.main.temp}&deg;F</p>
         <p>Humidity: {weatherData.main.humidity}%</p>
         <p>Feels Like: {weatherData.main.feels_like}&deg;F</p>

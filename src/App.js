@@ -46,14 +46,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Weather Station report:</h1>
+      <h1 class="my-5">Weather Station Report:</h1>
+      <div class="inline-flex">
       {data.length !== 0 ? (
         <Weather weatherData={data}/> //adds data as a prop to weather, and renders the weather component
       ) : (
-        <div>
-          <p>Loading...</p>
-        </div>
+        <div class="loader m-5"></div>
       )}
+      </div>
     </div>
   );
 }
